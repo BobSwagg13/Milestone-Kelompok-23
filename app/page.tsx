@@ -12,14 +12,14 @@ const Home: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'loading') return; // Avoid redirecting while the session is loading
+    if (status === 'loading') return; 
     if (!session) {
-      router.push('/auth/signin');
+      router.replace('/auth/signin'); 
     }
   }, [session, status, router]);
 
   if (status === 'loading') {
-    return <p>Loading...</p>; // You can render a loading state here
+    return <p>Loading...</p>;
   }
 
   return (
