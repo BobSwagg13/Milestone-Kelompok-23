@@ -2,16 +2,15 @@ import NextAuth from "next-auth";
 
 declare module "next-auth" {
   interface User {
-    id: string; // User ID
-    username: string; // Username
+    id: string;
+    username: string;
   }
 
   interface Session {
-    user: User; // User object
-  }
-
-  interface JWT {
-    id: string; // User ID
-    username: string; // Username
+    user: {
+      id: string;
+      username: string;
+    } & DefaultSession["user"];
   }
 }
+

@@ -5,21 +5,29 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// Define a custom pinpoint icon
 const pinpointIcon = new L.Icon({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  iconSize: [25, 41], // Fixed size of the icon
-  iconAnchor: [12, 41], // Anchor point of the icon
-  popupAnchor: [1, -34], // Popup anchor point
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-  shadowSize: [41, 41] // Size of the shadow
+  shadowSize: [41, 41]
 });
 
+// Define Place interface
+interface Place {
+  name: string;
+  latitude: number;
+  longitude: number;
+  description?: string;
+  reward?: number;
+}
+
 const MapComponent = () => {
-  const [places, setPlaces] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [center, setCenter] = useState([-6.9175, 107.6191]); // Default center
-  const [userLocation, setUserLocation] = useState(null);
+  const [places, setPlaces] = useState<Place[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [center, setCenter] = useState<[number, number]>([-6.9175, 107.6191]);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -28,7 +36,7 @@ const MapComponent = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
+        const data: Place[] = await response.json();
         console.log('Places data:', data);
         setPlaces(data);
 
@@ -55,14 +63,14 @@ const MapComponent = () => {
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation([latitude, longitude]);
-          setCenter([latitude, longitude]); // Optionally center map on user's location
+          setCenter([latitude, longitude]);
         },
         (error) => {
-          console.error("Error getting location: ", error);
+          console.error('Error getting location: ', error);
         }
       );
     } else {
-      console.error("Geolocation is not supported by this browser.");
+      console.error('Geolocation is not supported by this browser.');
     }
   }, []);
 

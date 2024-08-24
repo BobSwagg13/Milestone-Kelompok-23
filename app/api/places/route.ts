@@ -10,14 +10,14 @@ export async function GET() {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ message: 'Failed to fetch places', error: error.message }), {
+    return new Response(JSON.stringify({ message: 'Failed to fetch places', error: (error as Error).message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     await connectToDatabase();
     const { name, latitude, longitude, description, reward } = await request.json();
@@ -28,7 +28,7 @@ export async function POST(request) {
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ message: 'Failed to add place', error: error.message }), {
+    return new Response(JSON.stringify({ message: 'Failed to add place', error: (error as Error).message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

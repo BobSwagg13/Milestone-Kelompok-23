@@ -5,12 +5,29 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import styles from './dashboard.module.css';
 
-const Dashboard = () => {
+// Define Task interface
+interface Task {
+  _id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
+  description?: string;
+  reward?: string;
+  image?: string;
+}
+
+const Dashboard: React.FC = () => {
   const { data: session, status } = useSession();
-  const [username, setUsername] = useState('TaskHunter');
-  const [tasks, setTasks] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTask, setNewTask] = useState({
+  const [username, setUsername] = useState<string>('TaskHunter');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [newTask, setNewTask] = useState<{
+    name: string;
+    latitude: string;
+    longitude: string;
+    description: string;
+    reward: string;
+  }>({
     name: '',
     latitude: '',
     longitude: '',
@@ -31,7 +48,7 @@ const Dashboard = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
+        const data: Task[] = await response.json();
         setTasks(data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
@@ -41,11 +58,11 @@ const Dashboard = () => {
     fetchTasks();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setNewTask({ ...newTask, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const taskData = {
       ...newTask,
