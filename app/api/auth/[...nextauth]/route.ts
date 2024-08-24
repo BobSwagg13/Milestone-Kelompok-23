@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -62,6 +62,8 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  return NextAuth(req, res, authOptions);
+// API route handler
+export async function GET(request: NextRequest) {
+  const response = await NextAuth(request, authOptions);
+  return NextResponse.json(response);
 }
