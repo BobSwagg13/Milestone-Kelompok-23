@@ -1,0 +1,219 @@
+.dashboardContainer {
+  padding: 20px;
+  background-color: #f4f4f9;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #294B29;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo h1 {
+  margin-left: 10px;
+  color: #ecf0f1;
+  font-size: 24px;
+}
+
+.navbar a {
+  color: #ecf0f1;
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+.welcomeSection {
+  text-align:left;
+  margin-bottom: 30px;
+}
+
+.welcomeSection h2 {
+  font-size: 28px;
+  color: #34495e;
+}
+
+.tasksSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.taskCard {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.taskCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.taskImage {
+  border-bottom: 1px solid #ddd;
+}
+
+.taskInfo {
+  padding: 15px;
+}
+
+.taskTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.taskInfo p {
+  margin: 5px 0;
+  color: #7f8c8d;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modalContent h2 {
+  margin-top: 0;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submitButton {
+  background-color: #0070f3;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ccc;
+}
+
+.doneButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  background-color: #28a745;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.doneButton:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+.doneButton:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* General button style for navbar links */
+.navbar a,
+.navbar button {
+  color: #ecf0f1;
+  background-color: #294B29; /* Background color of buttons */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  display: inline-block;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  background-color: gray; /* Darker shade for hover effect */
+}
+
+.navbar button {
+  /* Optional additional styles for buttons */
+}
+
+/* Ensure even spacing for navigation items */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spacing between items */
+}
+
+/* Styling for the "Add Task" button */
+.addTaskButton {
+  background-color: #0070f3; /* Different color if needed */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+}
+
+.addTaskButton:hover {
+  background-color: #005bb5; /* Darker shade for hover effect */
+}
