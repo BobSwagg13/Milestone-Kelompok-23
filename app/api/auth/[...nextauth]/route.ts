@@ -24,7 +24,11 @@ const authOptions: NextAuthOptions = {
           const user = await User.findOne({ username: credentials.username }).exec();
 
           if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { id: user._id.toString(), name: user.username };
+            return {
+              ...user.toObject(), // Return the whole user object
+              id: user._id.toString(), // Convert _id to a string
+              name: user.username, // Use username as name
+            };
           }
           return null;
         } catch (error) {
