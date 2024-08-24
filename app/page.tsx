@@ -14,7 +14,7 @@ const Home: React.FC = () => {
     const checkSession = async () => {
       const session = await getSession();
       if (!session) {
-        router.push('/');
+        router.push('/auth/signin');
       }
     };
     checkSession();

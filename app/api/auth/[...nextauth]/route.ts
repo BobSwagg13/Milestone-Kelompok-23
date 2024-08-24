@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -25,7 +24,7 @@ const authOptions: NextAuthOptions = {
           const user = await User.findOne({ username: credentials.username }).exec();
 
           if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { id: user._id.toString(), name: user.username } as any;
+            return { id: user._id.toString(), name: user.username };
           }
           return null;
         } catch (error) {
@@ -62,8 +61,6 @@ const authOptions: NextAuthOptions = {
   },
 };
 
-// API route handler
-export async function GET(request: NextRequest) {
-  const response = await NextAuth(request, authOptions);
-  return NextResponse.json(response);
-}
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };
