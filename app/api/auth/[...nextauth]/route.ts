@@ -62,4 +62,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+export async function GET(req: Request) {
+  return NextAuth(req, authOptions);
+}
