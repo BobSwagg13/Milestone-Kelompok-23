@@ -4,9 +4,9 @@ import bcrypt from "bcryptjs";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
-import type { User as NextAuthUser } from "next-auth";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
           const user = await User.findOne({ username: credentials.username }).exec();
 
           if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { id: user._id.toString(), name: user.username } as NextAuthUser;
+            return { id: user._id.toString(), name: user.username } as any;
           }
           return null;
         } catch (error) {
@@ -62,6 +62,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export async function GET(req: Request) {
-  return NextAuth(req, authOptions);
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
+  return NextAuth(req, res, authOptions);
 }
