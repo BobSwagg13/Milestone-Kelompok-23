@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
-import type { User as NextAuthUser } from "next-auth";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
           const user = await User.findOne({ username: credentials.username }).exec();
 
           if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { id: user._id.toString(), name: user.username } as NextAuthUser;
+            return { id: user._id.toString(), name: user.username } as any;
           }
           return null;
         } catch (error) {
@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // Session max age in seconds (24 hours)
+    maxAge: 24 * 60 * 60, 
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -62,4 +62,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-export default NextAuth(authOptions);
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
+  return NextAuth(req, res, authOptions);
+}
