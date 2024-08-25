@@ -6,6 +6,7 @@ interface IPlace extends Document {
   longitude: number;
   description: string;
   reward: string; 
+  image?: string;
 }
 
 const PlaceSchema: Schema = new Schema({
@@ -13,7 +14,8 @@ const PlaceSchema: Schema = new Schema({
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   description: { type: String, required: true },
-  reward: { type: String, required: true }
+  reward: { type: String, required: true },
+  image: { type: String, required: false },
 });
 
 const Place: Model<IPlace> = mongoose.models.Place || mongoose.model<IPlace>('Place', PlaceSchema);

@@ -27,6 +27,7 @@ const Dashboard: React.FC = () => {
     longitude: string;
     description: string;
     reward: string;
+    image?: string;
   }>({
     name: '',
     latitude: '',
@@ -34,6 +35,24 @@ const Dashboard: React.FC = () => {
     description: '',
     reward: ''
   });
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      setFile(files[0]);
+    }
+  };
+
+  const convertToBase64 = (file: File | null) => {
+    if (!file) return Promise.resolve(null);
+    return new Promise<string | null>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user) {
@@ -64,11 +83,16 @@ const Dashboard: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const base64Image = await convertToBase64(file);
     const taskData = {
       ...newTask,
       latitude: parseFloat(newTask.latitude),
-      longitude: parseFloat(newTask.longitude)
+      longitude: parseFloat(newTask.longitude),
+      image: base64Image,
     };
+  
+    console.log('Task Data:', taskData); // Debugging: Log task data
+  
     try {
       const response = await fetch('/api/places', {
         method: 'POST',
@@ -207,6 +231,16 @@ const Dashboard: React.FC = () => {
                   value={newTask.reward}
                   onChange={handleChange}
                   required
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="image">Image:</label>
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  onChange={handleFileChange}
+                  accept="image/*"
                 />
               </div>
               <div className={styles.modalActions}>
