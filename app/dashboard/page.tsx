@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import styles from './dashboard.module.css';
+import { Plus,Coins} from 'lucide-react';
 
 // Define Task interface
 interface Task {
@@ -27,7 +27,6 @@ const Dashboard: React.FC = () => {
     longitude: string;
     description: string;
     reward: string;
-    image?: string;
   }>({
     name: '',
     latitude: '',
@@ -35,24 +34,6 @@ const Dashboard: React.FC = () => {
     description: '',
     reward: ''
   });
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setFile(files[0]);
-    }
-  };
-
-  const convertToBase64 = (file: File | null) => {
-    if (!file) return Promise.resolve(null);
-    return new Promise<string | null>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
 
   useEffect(() => {
     if (status === 'authenticated' && session?.user) {
@@ -83,16 +64,11 @@ const Dashboard: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const base64Image = await convertToBase64(file);
     const taskData = {
       ...newTask,
       latitude: parseFloat(newTask.latitude),
-      longitude: parseFloat(newTask.longitude),
-      image: base64Image,
+      longitude: parseFloat(newTask.longitude)
     };
-  
-    console.log('Task Data:', taskData); // Debugging: Log task data
-  
     try {
       const response = await fetch('/api/places', {
         method: 'POST',
@@ -134,36 +110,29 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className={styles.dashboardContainer}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <Image src="/logo.png" alt="TaskHunt Logo" width={50} height={50} />
-          <h1>TaskHunt</h1>
-        </div>
-        <nav className={styles.navbar}>
-          <a href="/">Map</a>
-          <a href="/about">About Us</a>
-          <button onClick={() => setIsModalOpen(true)} className={styles.addTaskButton}>Add Task</button>
-          <a href="/auth/signin">Sign Out</a>
-        </nav>
-      </header>
-
-      <section className={styles.welcomeSection}>
-        <h2>Welcome, {username}</h2>
-      </section>
-
-      <section className={styles.tasksSection}>
+    <main className="bg-gradient-to-b from-yellow-100 to-green-300 p-4 min-h-screen">
+      <h2 className=' text-4xl text-green-800 m-4'>Welcome, {username}</h2>
+      <div className='flex flex-row'>
+      <section className='flex'>
         {tasks.length > 0 ? (
           tasks.map((task) => (
-            <div key={task._id} className={styles.taskCard}>
-              <Image src={task.image || '/gacor.jpg'} alt={task.name} width={300} height={200} />
-              <div className={styles.taskInfo}>
-                <h3 className={styles.taskTitle}>{task.name}</h3>
+            <div className='bg-white rounded-2xl m-5 w-60 h-90 shadow-2xl border-2 border-custom-green' key={task._id} >
+              <div className='p-5'>
+              <h3 className='text-xl font-semibold my-2'>{task.name}</h3>
+              <Image src={task.image || '/gacor.jpg'} alt={task.name} width={300} height={200}  className='rounded-lg ' />
+              <div>
                 <p><strong>Description:</strong> {task.description}</p>
-                <p><strong>Reward:</strong> {task.reward}</p>
+                <p className='font-semibold'>Reward</p>
+                <p className='flex flex-row items-center justify-center bg-light-green py-3 text-custom-green text-2xl rounded-3xl font-semibold shadow-md mb-3 app'>
+                  <Coins size={30} className='mr-2' />
+                  {task.reward} pts
+                  </p>
+                <div className='border-custom-green border-2 rounded-md p-3 mt-5'>
                 <p><strong>Latitude:</strong> {task.latitude}</p>
                 <p><strong>Longitude:</strong> {task.longitude}</p>
-                <button onClick={() => markAsDone(task._id)} className={styles.doneButton}>Mark as Done</button>
+                </div>
+                <button onClick={() => markAsDone(task._id)} className='mt-4 bg-light-green px-3 py-2 rounded-xl hover:shadow-md hover:scale-125 transition text-custom-green font-semibold '>Mark as Done</button>
+                </div>
               </div>
             </div>
           ))
@@ -171,13 +140,19 @@ const Dashboard: React.FC = () => {
           <div>No tasks available</div>
         )}
       </section>
+      <button onClick={() => setIsModalOpen(true)} className='bg-transparent backdrop-blur-xl rounded-2xl m-5 w-60 h-90 shadow-2xl flex flex-col items-center justify-center'>
+        <div className='bg-white shadow-2xl p-3 rounded-full app text-custom-green'>
+        <Plus strokeWidth={3}/>
+        </div>
+        <p className='mt-3 font-semibold'>Add Task</p>
+      </button>
+      </div>
 
       {isModalOpen && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>Add New Task</h2>
+          <div className='bg-white flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center px-4 py-9'>
+            <h2 className='text-xl'>Add New Task</h2>
             <form onSubmit={handleSubmit}>
-              <div className={styles.formGroup}>
+              <div>
                 <label htmlFor="name">Name:</label>
                 <input
                   type="text"
@@ -188,7 +163,7 @@ const Dashboard: React.FC = () => {
                   required
                 />
               </div>
-              <div className={styles.formGroup}>
+              <div>
                 <label htmlFor="latitude">Latitude:</label>
                 <input
                   type="number"
@@ -200,7 +175,7 @@ const Dashboard: React.FC = () => {
                   required
                 />
               </div>
-              <div className={styles.formGroup}>
+              <div>
                 <label htmlFor="longitude">Longitude:</label>
                 <input
                   type="number"
@@ -212,7 +187,7 @@ const Dashboard: React.FC = () => {
                   required
                 />
               </div>
-              <div className={styles.formGroup}>
+              <div>
                 <label htmlFor="description">Description:</label>
                 <textarea
                   id="description"
@@ -222,7 +197,7 @@ const Dashboard: React.FC = () => {
                   required
                 ></textarea>
               </div>
-              <div className={styles.formGroup}>
+              <div>
                 <label htmlFor="reward">Reward:</label>
                 <input
                   type="text"
@@ -233,25 +208,15 @@ const Dashboard: React.FC = () => {
                   required
                 />
               </div>
-              <div className={styles.formGroup}>
-                <label htmlFor="image">Image:</label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  onChange={handleFileChange}
-                  accept="image/*"
-                />
-              </div>
-              <div className={styles.modalActions}>
-                <button type="submit" className={styles.submitButton}>Add Task</button>
-                <button type="button" onClick={() => setIsModalOpen(false)} className={styles.cancelButton}>Cancel</button>
+              <div>
+                <button type="submit">Add Task</button>
+                <button type="button" onClick={() => setIsModalOpen(false)}>Cancel</button>
               </div>
             </form>
           </div>
-        </div>
       )}
-    </div>
+    </main>
+    
   );
 };
 

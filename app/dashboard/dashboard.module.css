@@ -172,11 +172,11 @@
   cursor: not-allowed;
 }
 
-
+/* General button style for navbar links */
 .navbar a,
 .navbar button {
   color: #ecf0f1;
-  background-color: #294B29; 
+  background-color: #294B29; /* Background color of buttons */
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -189,23 +189,23 @@
 
 .navbar a:hover,
 .navbar button:hover {
-  background-color: gray; 
+  background-color: gray; /* Darker shade for hover effect */
 }
 
 .navbar button {
-
+  /* Optional additional styles for buttons */
 }
 
-
+/* Ensure even spacing for navigation items */
 .navbar {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 15px; /* Spacing between items */
 }
 
-
+/* Styling for the "Add Task" button */
 .addTaskButton {
-  background-color: #0070f3;
+  background-color: #0070f3; /* Different color if needed */
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -215,19 +215,5 @@
 }
 
 .addTaskButton:hover {
-  background-color: #005bb5; 
-
-  
-}
-.dashboardContainer {
-  font-family: 'Quicksand', sans-serif;
-}
-
-.logo h1 {
-  font-family: Arial, sans-serif;
-}
-
-.navbar a,
-.navbar button {
-  font-family: 'Quicksand', sans-serif;
+  background-color: #005bb5; /* Darker shade for hover effect */
 }
